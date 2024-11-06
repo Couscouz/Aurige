@@ -1,12 +1,6 @@
 #!/bin/bash
 
-# Colors
-RED="\033[01;31m"      # Errors
-GREEN="\033[01;32m"    # Success
-YELLOW="\033[01;33m"   # Warnings
-BLUE="\033[01;34m"     # Information
-BOLD="\033[01;01m"     # Highlight
-NORMAL="\033[00m"      # Normal
+source ../.conf
 
 
 # Check if run as root
@@ -34,5 +28,5 @@ echo -e "\n\n ${GREEN}[+]${NORMAL} Unzipping ${GREEN}rockyou${NORMAL}"
 sudo gunzip /usr/share/wordlists/rockyou.txt.gz
 
 # Apply changes
-echo -e "\n\n ${GREEN}[+]${NORMAL}  ${GREEN}Rebooting${NORMAL}"
+echo -e "\n\n ${GREEN}[+]${NORMAL} ${GREEN}Rebooting${NORMAL}"
 sudo reboot
