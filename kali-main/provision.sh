@@ -1,6 +1,12 @@
 #!/bin/bash
 
-source ../.conf
+# Colors
+RED="\033[01;31m"      # Errors
+GREEN="\033[01;32m"    # Success
+YELLOW="\033[01;33m"   # Warnings
+BLUE="\033[01;34m"     # Information
+BOLD="\033[01;01m"     # Highlight
+NORMAL="\033[00m"      # Normal
 
 
 # Check if run as root

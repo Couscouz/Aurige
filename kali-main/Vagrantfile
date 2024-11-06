@@ -5,6 +5,12 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = "kalilinux/rolling"
 
+  # Install missing plugins
+  unless Vagrant.has_plugin?("vagrant-vmware-desktop")
+    puts 'Installing vagrant-vmware-desktop Plugin...'
+    system('vagrant plugin install vagrant-vmware-desktop')
+  end
+
   config.vm.define "kali-main" do |kali|
     kali.vm.hostname = "kali-main"
 
@@ -14,6 +20,7 @@ Vagrant.configure("2") do |config|
       v.vmx["memsize"] = "8192"
       v.vmx["numvcpus"] = "2"
       v.vmx["svga.vramSize"] = "134217728" #VRAM 128MB
+      v.vmx["ethernet0.pcislotnumber"] = "160"
     end
   end
 

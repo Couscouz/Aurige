@@ -1,7 +1,18 @@
 #!/bin/bash
 
-source ../.conf
+# Parameters default values
+KEYBOARD="fr"
+TIMEZONE="Europe/Paris"
 wallpaper_path="/tmp/resources/wallpaper.jpg"
+
+# Colors
+RED="\033[01;31m"      # Errors
+GREEN="\033[01;32m"    # Success
+YELLOW="\033[01;33m"   # Warnings
+BLUE="\033[01;34m"     # Information
+BOLD="\033[01;01m"     # Highlight
+NORMAL="\033[00m"      # Normal
+
 
 
 # Check parameters
@@ -49,7 +60,8 @@ fi
 # Set Wallpaper
 if [ -e "${wallpaper_path}" ]; then
   echo -e "\n\n ${GREEN}[+]${NORMAL} Changing ${GREEN}wallpaper${NORMAL} (${BOLD}${wallpaper_path}${NORMAL})"
-  sudo ln -sf ${wallpaper_path} /usr/share/desktop-base/kali-theme/login/background
+  echo "later"
+  mv ${wallpaper_path} ~/Desktop/wallpaper.jpg
 else
   echo -e "\n\n ${YELLOW}[i]${NORMAL} ${YELLOW}Skipping wallpaper change${NORMAL} (missing: '$0 ${BOLD}/tmp/resources/wallpaper.jpg${NORMAL}')" 1>&2
 fi
