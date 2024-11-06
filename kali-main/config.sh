@@ -61,7 +61,6 @@ fi
 if [ -e "${wallpaper_path}" ]; then
   echo -e "\n\n ${GREEN}[+]${NORMAL} Changing ${GREEN}wallpaper${NORMAL} (${BOLD}${wallpaper_path}${NORMAL})"
   echo "later"
-  mv ${wallpaper_path} ~/Desktop/wallpaper.jpg
 else
   echo -e "\n\n ${YELLOW}[i]${NORMAL} ${YELLOW}Skipping wallpaper change${NORMAL} (missing: '$0 ${BOLD}/tmp/resources/wallpaper.jpg${NORMAL}')" 1>&2
 fi
