@@ -5,21 +5,18 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = "kalilinux/rolling"
 
-  config.vm.provider "vmware_desktop" do |v|
-    v.gui = true
-    v.vmx["memsize"] = "8192"
-    v.vmx["numvcpus"] = "2"
+  config.vm.define "kali-main" do |kali|
+    kali.vm.hostname = "kali-main"
+
+    kali.vm.provider "vmware_desktop" do |v|
+      v.gui = true
+      v.vmx["name"] = "kali-main"
+      v.vmx["memsize"] = "8192"
+      v.vmx["numvcpus"] = "2"
+      v.vmx["svga.vramSize"] = "134217728" #VRAM 128MB
+    end
   end
 
-  config.vm.provision "shell", inline: <<-SHELL
-    echo "Setting up French keyboard layout"
-    setxkbmap -layout fr
-    apt-get update
+  config.vm.provision "shell", path: "provision.sh", :args => "--keyboard=fr --timezone=Europe/Paris"
 
-    # Configure the locale to French
-    sudo apt-get install -y locales
-    sudo sed -i 's/^# us_US.UTF-8 UTF-8/fr_FR.UTF-8 UTF-8/' /etc/locale.gen
-    sudo locale-gen fr_FR.UTF-8
-    sudo update-locale LANG=fr_FR.UTF-8
-  SHELL
 end
