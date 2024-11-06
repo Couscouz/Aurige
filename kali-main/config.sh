@@ -35,6 +35,8 @@ sudo apt-get update
 #echo -e "\n\n ${GREEN}[+]${NORMAL} Packages ${GREEN}upgrade${NORMAL}"
 #sudo apt-get upgrade -y
 
+sudo mkdir /vagrant
+
 # Change keyboard layout
 if [[ -n "${KEYBOARD}" ]]; then
     echo -e "\n\n ${GREEN}[+]${NORMAL} Updating ${GREEN}location information${NORMAL} ~ keyboard layout (${BOLD}${KEYBOARD}${NORMAL})"

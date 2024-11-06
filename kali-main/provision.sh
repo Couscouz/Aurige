@@ -19,8 +19,20 @@ fi
 
 # Installing essentials packages
 echo -e "\n\n ${GREEN}[+]${NORMAL} Installing ${GREEN}tools${NORMAL}"
-sudo apt-get -y install wget gpg python3-pip bpython terminator seclists gobuster
+sudo apt-get -y install wget gpg python3-pip linux-headers-generic terminator 
 
+echo -e "\n\n ${GREEN}[+]${NORMAL} Installing ${GREEN}VMWare Tools${NORMAL}"
+sudo apt-get -y install open-vm-tools-desktop
+
+# Web
+sudo apt-get -y install gobuster seclists
+
+# Reverse/Pwn
+sudo apt-get -y install imhex rizin-cutter apktool ghidra python3-pwntools bpython gdb radare2
+bash -c "$(curl -fsSL https://gef.blah.cat/sh)" #gef
+
+# Stego
+sudo apt-get -y install steghide stegcracker audacity
 
 # Install VS Code
 echo -e "\n\n ${GREEN}[+]${NORMAL} Installing ${GREEN}Visual Studio Code${NORMAL}"
@@ -29,9 +41,25 @@ sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/
 echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" |sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
 rm -f packages.microsoft.gpg
 
+
+# NetworkMiner
+echo -e "\n\n ${GREEN}[+]${NORMAL} Installing ${GREEN}NetworkMiner${NORMAL}"
+sudo apt-get -y install mono-devel
+wget https://www.netresec.com/?download=NetworkMiner -O /tmp/NetworkMiner.zip
+sudo unzip /tmp/NetworkMiner.zip -d /opt/
+cd /opt/NetworkMiner*
+sudo chmod +x NetworkMiner.exe
+sudo chmod -R go+w AssembledFiles/
+sudo chmod -R go+w Captures/
+
+
 # Unzipping Rockyou
-echo -e "\n\n ${GREEN}[+]${NORMAL} Unzipping ${GREEN}rockyou${NORMAL}"
+echo -e "\n\n ${GREEN}[+]${NORMAL} Unzipping ${GREEN}rockyou.txt.gz${NORMAL}"
 sudo gunzip /usr/share/wordlists/rockyou.txt.gz
+
+# Getting linpeas
+echo -e "\n\n ${GREEN}[+]${NORMAL} Downloading ${GREEN}linpeas.sh${NORMAL}"
+wget https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh -O /vagrant/linpeas.sh
 
 # Apply changes
 echo -e "\n\n ${GREEN}[+]${NORMAL} ${GREEN}Rebooting${NORMAL}"
