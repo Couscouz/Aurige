@@ -20,7 +20,7 @@ Votre nom: %x %x %x %x %x
 Bonjour, 6a6e6f42 0 0 359a06bf 4
 ```
 
-Ouvrons gdb-gef et mettons un break juste apres le printf de notre buffer, pour voir à quoi correspondent les leaks
+Ouvrons gdb et mettons un break juste apres le printf de notre buffer, pour voir à quoi correspondent les leaks
 
 ```sh
 └─$ gdb printf-leak
