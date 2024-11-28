@@ -6,7 +6,7 @@
 - Heap overflow
 - Format string (leak, write)
 
-Chaque technique aura au moins 1 exemple pratique, voir dans `exemples/`
+Chaque technique aura au moins 1 exemple pratique, voir dans les dossiers correspondants.
 
 ## Format strings
 
@@ -44,9 +44,9 @@ __Mémo__:
 
 Permet d'écrire en mémoire une valeur controllée, le format est :
 
-<adresse>%<valeur>c%<position_sur_la_stack>$n
+`<adresse>%<valeur>c%<position_sur_la_stack>$<format>`
 
-Par exemple pour ecrire la valeur 0x12345678 à l'adresse 0x05557ff8, et que le buffer est en 1ere position sur la stack : 
+Par exemple pour ecrire la valeur 0x12345678 à l'adresse `0x05557ff8`, et que le buffer est en 1ere position sur la stack : 
 
 ```py
 payload = b"\xf8\x7f\x55\x05%305419892c%6$n"

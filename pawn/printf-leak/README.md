@@ -155,4 +155,4 @@ Votre nom: %15$d
 Bonjour, 1804289383
 ```
 
-Rappel: `%<index>$<format>`
+__Rappel:__ `%<index>$<format>`
